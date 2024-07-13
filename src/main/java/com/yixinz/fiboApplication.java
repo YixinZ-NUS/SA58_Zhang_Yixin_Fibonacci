@@ -1,5 +1,6 @@
 package com.yixinz;
 
+import com.yixinz.resources.Route;
 import io.dropwizard.core.Application;
 import io.dropwizard.core.setup.Bootstrap;
 import io.dropwizard.core.setup.Environment;
@@ -23,7 +24,9 @@ public class fiboApplication extends Application<fiboConfiguration> {
     @Override
     public void run(final fiboConfiguration configuration,
                     final Environment environment) {
-        // TODO: implement application
+        Route route = new Route();
+        environment.jersey().register(route);
+        System.out.println("i am running");
     }
 
 }
