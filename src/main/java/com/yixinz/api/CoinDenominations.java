@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CoinDenominations {
     private long id;
-    private ArrayList<Integer> coinDenominations;
+    private double[] coinDenominations;
     /* expected api:
     {
       "id": 1,
@@ -13,7 +13,7 @@ public class CoinDenominations {
     }
      */
     public CoinDenominations() {}
-    public CoinDenominations(long id, ArrayList<Integer> coinDenominations) {
+    public CoinDenominations(long id, double[] coinDenominations) {
         this.id = id;
         this.coinDenominations = coinDenominations;
     }
@@ -22,7 +22,7 @@ public class CoinDenominations {
         return id;
     }
 
-    public ArrayList<Integer> getCoinDenominations() {
+    public double[] getCoinDenominations() {
         return coinDenominations;
     }
 }

@@ -36,7 +36,11 @@ public class CalcResource {
     @GET
     @Timed
     public CoinDenominations WrapRes(@QueryParam("amt") int targetAmt) {
-        return new CoinDenominations(counter.incrementAndGet(), Calc(targetAmt));
+        double[] res = Calc(targetAmt).stream().
+                mapToDouble(Integer::doubleValue).
+                map(x->x/100).
+                toArray();
+        return new CoinDenominations(counter.incrementAndGet(), res);
     }
 
     //TODO: reason why not using recursive (and BFS?) -> hard to maintain new array recording coins used?
