@@ -20,7 +20,7 @@ public class CalcResource {
     //TODO: change way to pass value, utilizing configuration, 'Getting Started- Registering A Resource'
 
     //TODO: Implicitly pass targetAmt
-    //private int targetAmt;
+    //private double targetAmt;
     private final AtomicLong counter;
 
     public CalcResource() {
@@ -35,8 +35,8 @@ public class CalcResource {
 
     @GET
     @Timed
-    public CoinDenominations WrapRes(@QueryParam("amt") int targetAmt) {
-        double[] res = Calc(targetAmt).stream().
+    public CoinDenominations WrapRes(@QueryParam("amt") double targetAmt) {
+        double[] res = Calc((int)(targetAmt*100)).stream().
                 mapToDouble(Integer::doubleValue).
                 map(x->x/100).
                 toArray();
