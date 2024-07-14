@@ -10,12 +10,13 @@ import jakarta.ws.rs.core.MediaType;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.DoubleStream;
 
 @Path("/find")
 @Produces(MediaType.APPLICATION_JSON)
 // for now, use find?amt=10000
 public class CalcResource {
-    private final int[] coins;
+    private double[] coinsToUse;
     //private final int[] defaultCoins;
     //TODO: change way to pass value, utilizing configuration, 'Getting Started- Registering A Resource'
 
@@ -26,17 +27,17 @@ public class CalcResource {
     public CalcResource() {
 
         //this.coins = coins;
-        this.coins= new int[]{1, 5, 10, 20, 50, 100, 200, 500, 1000, 5000, 10000, 100000};
+        this.coinsToUse= new double[]{0.01, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 50, 100, 1000};
         // TODO: change later to fit user's choice; how to initialize coins?
-        //this.defaultCoins = new int[]{1, 5, 10, 20, 50, 100, 200, 500, 1000, 5000, 10000, 100000};
         // *100 to all values to avoid 0.3000000004 issue
         this.counter = new AtomicLong();
     }
 
     @GET
     @Timed
-    public CoinDenominations WrapRes(@QueryParam("amt") double targetAmt) {
-        double[] res = Calc((int)(targetAmt*100)).stream().
+    public CoinDenominations WrapRes(@QueryParam("amt") double targetAmt, double[] coins) {
+        coins = this.coinsToUse; // to change later
+        double[] res = Calc((int)(targetAmt*100),getCoinsIntForCalc(coins)).stream().
                 mapToDouble(Integer::doubleValue).
                 map(x->x/100).
                 toArray();
@@ -49,7 +50,7 @@ public class CalcResource {
     time complexity O(targetAmt * n), where n is the number of coin denominations.
     space complexity O(targetAmt)
     */
-    public ArrayList<Integer> Calc(int targetAmt){
+    public ArrayList<Integer> Calc(int targetAmt, int[] coins){
                 int max = targetAmt + 1;
                 //dp[i] holds the min coins required for amount i.
                 //dp[targetAmt] contains the minimum number of coins required to make up the target amount.
@@ -86,4 +87,11 @@ public class CalcResource {
                 }
             return result;
         }
+
+    public int[] getCoinsIntForCalc(double[] coins){
+        return DoubleStream.of(coins).
+                map(x->x*100).
+                mapToInt(x->(int)x).
+                toArray();
     }
+}
