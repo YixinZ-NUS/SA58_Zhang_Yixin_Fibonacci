@@ -1,0 +1,7 @@
+FROM openjdk:17-oracle
+LABEL authors="Zhang"
+RUN mkdir app
+COPY target/fibo-1.0.jar app
+COPY config.yml app
+WORKDIR app
+CMD ["java","-jar","fibo-1.0.jar","server","config.yml"]
