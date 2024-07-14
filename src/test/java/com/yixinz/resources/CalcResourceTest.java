@@ -51,12 +51,12 @@ public class CalcResourceTest {
     }
 
     @Test
-    void testWrapResForPartialCoinDenominations() {
+    void testWrapResForLongInput() {
         Double[] deno = {0.05, 0.5, 1.0, 5.0, 100.0, 1000.0};
         ArrayList<Double> denominationsList = new ArrayList<>(Arrays.asList(deno));
-        DenoRequest request = new DenoRequest(3657.90,denominationsList);
+        DenoRequest request = new DenoRequest(3657.900000000,denominationsList);
         CoinDenominations response = calcResource.WrapRes(request);
-
+        // actually 3657.90999999 will also pass because *100 -> int truncates latter digits
         assertArrayEquals(new double[]{0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.5,
                 1, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 100, 100, 100, 100, 100, 100,
                 1000, 1000, 1000}, response.getCoinDenominations());
