@@ -18,6 +18,7 @@ const availableCoins = [
 const CoinDenoForm = ({ onCalculate }) => {
     const [targetAmt, setTargetAmt] = useState('');
     const [selectedCoins, setSelectedCoins] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleCoinChange = (event, coinValue) => {
         if (event.target.checked) {
@@ -29,6 +30,22 @@ const CoinDenoForm = ({ onCalculate }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        setErrorMessage('');
+
+        // Perform validation on targetAmt
+        if (parseFloat(targetAmt) < 0) {
+            setErrorMessage('Target Amount cannot be negative.');
+            return;
+        }
+        if (targetAmt === '') {
+            setErrorMessage('Target Amount cannot be empty.');
+            return;
+        }
+
+        if (selectedCoins.length === 0) {
+            setErrorMessage('At least one Coin value must be selected.');
+            return;
+        }
         onCalculate(targetAmt, selectedCoins);
     };
 
@@ -41,8 +58,8 @@ const CoinDenoForm = ({ onCalculate }) => {
                     <input type="number" value={targetAmt} onChange={e => setTargetAmt(e.target.value)}/>
                 </label>
                 <br/>
-                <h3>Select Coin Denominations:</h3>
-                    <div className="coin-selection">
+                <h3>Select Coins to use:</h3>
+                <div className="coin-selection">
                     {availableCoins.map(coin => (
                         <div key={coin.value}>
                             <input
@@ -53,9 +70,11 @@ const CoinDenoForm = ({ onCalculate }) => {
                             <label>{coin.label}</label>
                         </div>
                     ))}
-                    </div>
+                </div>
                 <br/>
                 <button type="submit">Calculate</button>
+                <br/>
+                {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
             </form>
         </div>
 );
