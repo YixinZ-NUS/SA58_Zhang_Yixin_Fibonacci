@@ -34,29 +34,31 @@ const CoinDenoForm = ({ onCalculate }) => {
 
     return (
         <div>
-            <h1>Coin Change Calculator</h1>
+            <h2>Coin denominations Calculator</h2>
             <form onSubmit={handleSubmit}>
                 <label>
                     Target Amount:
-                    <input type="number" value={targetAmt} onChange={e => setTargetAmt(e.target.value)} />
+                    <input type="number" value={targetAmt} onChange={e => setTargetAmt(e.target.value)}/>
                 </label>
-                <br />
+                <br/>
                 <h3>Select Coin Denominations:</h3>
-                {availableCoins.map(coin => (
-                    <div key={coin.value}>
-                        <input
-                            type="checkbox"
-                            checked={selectedCoins.includes(coin.value)}
-                            onChange={e => handleCoinChange(e, coin.value)}
-                        />
-                        <label>{coin.label}</label>
+                    <div className="coin-selection">
+                    {availableCoins.map(coin => (
+                        <div key={coin.value}>
+                            <input
+                                type="checkbox"
+                                checked={selectedCoins.includes(coin.value)}
+                                onChange={e => handleCoinChange(e, coin.value)}
+                            />
+                            <label>{coin.label}</label>
+                        </div>
+                    ))}
                     </div>
-                ))}
-                <br />
+                <br/>
                 <button type="submit">Calculate</button>
             </form>
         </div>
-    );
+);
 };
 
 export default CoinDenoForm;
