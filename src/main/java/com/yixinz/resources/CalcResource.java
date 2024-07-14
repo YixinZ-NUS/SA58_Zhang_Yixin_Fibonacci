@@ -2,6 +2,7 @@ package com.yixinz.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import com.yixinz.api.CoinDenominations;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -16,18 +17,14 @@ import java.util.stream.DoubleStream;
 @Produces(MediaType.APPLICATION_JSON)
 // for now, use find?amt=10000
 public class CalcResource {
-    private double[] coinsToUse;
-    //private final int[] defaultCoins;
-    //TODO: change way to pass value, utilizing configuration, 'Getting Started- Registering A Resource'
-
     //TODO: Implicitly pass targetAmt
     //private double targetAmt;
+    @NotEmpty
+    private double[] coinsToUse;
     private final AtomicLong counter;
 
     public CalcResource() {
-
-        //this.coins = coins;
-        this.coinsToUse= new double[]{0.01, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 50, 100, 1000};
+        this.coinsToUse= new double[]{};
         // TODO: change later to fit user's choice; how to initialize coins?
         // *100 to all values to avoid 0.3000000004 issue
         this.counter = new AtomicLong();
