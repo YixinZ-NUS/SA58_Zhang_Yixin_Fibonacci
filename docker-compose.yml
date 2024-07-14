@@ -1,17 +1,16 @@
 version: '3'
 services:
   backend:
-    container_name: dropwizard-YixinZ
     build:
       context: .
       dockerfile: Dockerfile-backend
     ports:
       - "10020:8080"
       - "10021:8081"
-
+    networks:
+      - project_network
 
   frontend:
-    container_name: react-YixinZ
     build:
       context: ./frontend
       dockerfile: Dockerfile-frontend
@@ -19,3 +18,8 @@ services:
       - '12300:3000'
     depends_on:
           - backend
+    networks:
+          - project_network
+networks:
+  project_network:
+     driver: bridge
