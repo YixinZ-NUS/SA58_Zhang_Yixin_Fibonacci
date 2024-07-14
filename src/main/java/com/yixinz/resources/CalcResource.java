@@ -44,10 +44,20 @@ public class CalcResource {
     }
 
     //TODO: reason why not using recursive (and BFS?) -> hard to maintain new array recording coins used?
+    /*
+    returns the list of denominations used to achieve the minimum number of coins for the target amount.
+    time complexity O(targetAmt * n), where n is the number of coin denominations.
+    space complexity O(targetAmt)
+    */
     public ArrayList<Integer> Calc(int targetAmt){
                 int max = targetAmt + 1;
+                //dp[i] holds the min coins required for amount i.
+                //dp[targetAmt] contains the minimum number of coins required to make up the target amount.
+                //prev[i] holds the previous state for optimal solution at i
                 int[] dp = new int[targetAmt + 1];
                 int[] prev = new int[targetAmt + 1];
+
+                // Initialize dp array with max value except dp[0] which is 0
                 Arrays.fill(dp, max);
                 dp[0] = 0;
 
@@ -55,8 +65,10 @@ public class CalcResource {
                     for (int coin : coins) {
                         if (coin <= i) {
                             if (dp[i] > dp[i - coin] + 1) {
+                                //If current coin can be used and achieves better result,
+                                //Update the minimum coins required and the previous state
                                 dp[i] = dp[i - coin] + 1;
-                                prev[i] = i - coin; // previous state
+                                prev[i] = i - coin;
                             }
                         }
                     }
@@ -65,11 +77,12 @@ public class CalcResource {
                 if (dp[targetAmt] > targetAmt) {
                     return new ArrayList<>();
                 }
+                //Reconstructing the list of denominations, backtrack from targetAmt to 0
 
                 ArrayList<Integer> result = new ArrayList<>();
                 while (targetAmt > 0) {
-                    result.add(targetAmt - prev[targetAmt]);
-                    targetAmt = prev[targetAmt];
+                    result.add(targetAmt - prev[targetAmt]);// Add the denomination used
+                    targetAmt = prev[targetAmt];// Move to the previous state
                 }
             return result;
         }
