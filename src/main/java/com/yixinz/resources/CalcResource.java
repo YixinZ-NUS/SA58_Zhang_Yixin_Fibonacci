@@ -29,6 +29,7 @@ public class CalcResource {
         System.out.println("Received request: " + request);
         // *100 to all values to avoid 0.3000000004 issue
         double[] res = Calc((int)(targetAmt*100),getCoinsIntForCalc(coins)).stream().
+                sorted().
                 mapToDouble(Integer::doubleValue).
                 map(x->x/100).
                 toArray();
